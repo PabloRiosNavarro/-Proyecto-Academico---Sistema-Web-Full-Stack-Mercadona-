@@ -1,0 +1,19 @@
+:80 {
+    # Redirige a la aplicación de React
+    redir /react /public/react/index.html
+            
+    # Sirve archivos estáticos directamente
+    handle_path /public/* {
+        root * /usr/share/caddy/public
+        file_server
+    }
+            
+    # Pasa el resto de peticiones al contenedor de la aplicación
+    handle_path /* {
+        reverse_proxy tienda-dai:8000
+    }
+            
+    log {
+        output stdout
+    }
+}

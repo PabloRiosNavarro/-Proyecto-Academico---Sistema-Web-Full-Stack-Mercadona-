@@ -1,0 +1,51 @@
+### 1. Listar todos los productos
+
+GET http://localhost:8000/api/productos
+Accept: application/json
+
+### 2. Listar un producto
+### HAY Q INDICAR ID
+
+GET http://localhost:8000/api/productos/ID_AQUI_PRoducto
+
+
+### 3. Buscar productos por nombre / texto_1
+
+GET http://localhost:8000/api/productos?texto_1=cereales
+Accept: application/json
+
+### 4. Crear un nuevo producto
+
+# He ajustado los campos para que coincidan con tu base de datos
+POST http://localhost:8000/api/productos
+Content-Type: application/json
+
+{
+  "texto_1": "Manzana Royal",
+  "texto_2": "Bolsa 1kg",
+  "precio_euros": 1.95,
+  "url_img": "https://p1.mercadona.es/photos/8480000123456.jpg",
+  "categoria": "Fruta"
+}
+
+### 5. Actualizar el precio de un producto
+
+PUT http://localhost:8000/api/productos/68f0dcd43ba6134fd5eda379
+Content-Type: application/json
+
+{
+  "precio_euros": 2.10
+}
+
+PUT http://localhost:8000/api/productos/68f0dcd43ba6134fd5eda327
+Content-Type: application/json
+
+{
+  "precio_euros": 3.99
+}
+
+
+### 6. Eliminar un producto
+
+DELETE http://localhost:8000/api/productos/ID_AQUI
+

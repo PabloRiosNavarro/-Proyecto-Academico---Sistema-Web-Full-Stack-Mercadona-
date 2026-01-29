@@ -1,0 +1,13 @@
+# Base de datos (MongoDB)
+data/
+db/
+
+# Node.js
+node_modules/
+npm-debug.log
+
+# Variables de entorno (Seguridad)
+.env
+
+# Archivos del sistema
+.DS_Store

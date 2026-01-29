@@ -1,0 +1,62 @@
+services:
+  # Servicio 1: Base de datos MongoDB
+  practica6-mongo-1:
+    image: mongo
+    container_name: mongodb-dai
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - tienda-network
+
+  # Servicio 2: Aplicación de la tienda
+  tienda-dai:
+    build: .
+    container_name: tienda-dai
+    restart: unless-stopped
+    environment:
+      # Usar el nombre del servicio 'mongodb' para la conexión
+      - MONGO_URI=mongodb://root:example@mongodb-dai:27017/DAI?authSource=admin
+    depends_on:
+      - practica6-mongo-1
+    networks:
+      - tienda-network
+
+  # Servicio 3: Proxy inverso Caddy
+  caddy:
+    image: caddy:latest
+    container_name: caddy-dai
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./public:/usr/share/caddy/public
+    depends_on:
+      - tienda-dai
+    networks:
+      - tienda-network
+  practica6-mongo-express:
+    image: mongo-express
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongodb-dai:27017/
+      ME_CONFIG_BASICAUTH: false
+    networks:
+      - tienda-network
+
+networks:
+  tienda-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
