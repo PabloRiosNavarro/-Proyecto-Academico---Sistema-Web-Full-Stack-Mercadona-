@@ -4,19 +4,24 @@ Este repositorio contiene el proyecto final de la asignatura **Desarrollo de Apl
 
 ---
 
+
 ## 🚀 Funcionalidades Principales
 
-El sistema ofrece una experiencia completa tanto para clientes como para administradores:
+El sistema ofrece una experiencia completa tanto para clientes como para administradores.
+El sistema está dividido en dos interfaces con propósitos distintos:
 
-### 👤 Interfaz del Cliente
-* **Catálogo y Búsqueda:** Visualización de productos con búsqueda avanzada por texto, categorías y subcategorías.
-* **Carrito de Compra:** Gestión de estado mediante `express-session` (añadir, resumir y eliminar ítems).
-* **Sistema de Usuarios:** Registro y Login seguros con gestión de sesiones mediante **JWT** almacenado en cookies `httpOnly`.
+### 🌐 Web Principal (Renderizado en Servidor - Nunjucks)
+Esta es la versión totalmente funcional de la tienda:
+* **Catálogo Completo:** Visualización de productos con navegación por categorías.
+* **Carrito de Compra:** Gestión de estado mediante `express-session` (añadir ítems al carrito).
+* **Sistema de Usuarios:** Registro y Login con sesiones seguras mediante **JWT** en cookies `httpOnly`.
+* **Panel de Administración:** Edición de precios "en caliente" y eliminación de productos.
 
-### 🛡️ Panel de Administración
-* **Gestión de Roles:** Diferenciación entre usuarios estándar y administradores (`admin: true`).
-* **Edición en Caliente:** Modificación de precios directamente desde la interfaz.
-* **Gestión de Inventario:** CRUD completo (Crear, Leer, Actualizar, Eliminar) de productos en la base de datos.
+### ⚛️ Micro-Frontend React (Búsqueda Interactiva)
+Ubicado en la carpeta `practica6-frontend`, este módulo es una implementación específica para demostrar el uso de una API REST:
+* **Búsqueda en Tiempo Real:** Los productos se filtran automáticamente conforme el usuario escribe en la barra de búsqueda.
+* **Consumo de API:** Realiza peticiones asíncronas al backend para actualizar la vista sin recargar la página.
+* **Nota Importante:** En esta interfaz **solo es funcional la barra de búsqueda**; el resto de botones y enlaces son estáticos.
 
 ### ⚙️ Módulos Especiales
 * **Data Scraper:** Scripts (`parser.js`) para extraer datos de HTMLs locales y generar un JSON maestro.
@@ -52,7 +57,7 @@ El desarrollo se realizó de forma incremental a través de 7 fases:
 * **P4:** Modelado de datos con Mongoose y persistencia en MongoDB.
 * **P5:** Implementación del carrito de compra con sesiones.
 * **P6:** Seguridad, roles de usuario y desarrollo de API REST para el cliente React.
-* **P7:** Contenerización con Docker y orquestación de servicios.
+* **P7:** Configuración del proxy y contenerización con Docker y orquestación de servicios.
 
 ---
 
@@ -65,7 +70,7 @@ La forma más sencilla de levantar el proyecto (BD + Backend + Frontend) es usan
     ```env
     PORT=8000
     MONGO_URI=mongodb://root:example@mongodb:27017/DAI?authSource=admin
-    SECRET_KEY=tu_clave_secreta_super_segura
+    SECRET_KEY=tu_clave_secreta
     ```
 
 2.  **Levantar el entorno:**
