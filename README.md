@@ -1,86 +1,99 @@
-# 🛒 Proyecto Académico — Sistema Web Full-Stack (Mercadona Clone)
+# 🛒 Proyecto Académico: TiendaDAI (Mercadona Clone)
 
-Este repositorio contiene un proyecto académico para la asignatura de Desarrollo de Aplicaciones en Internet (DAI). Simula una tienda online (inspirada en Mercadona) integrando un backend robusto en Node.js con una base de datos MongoDB y un frontend moderno opcional en React.
+Este repositorio contiene el proyecto final de la asignatura **Desarrollo de Aplicaciones en Internet (DAI)**. Se trata de una plataforma de e-commerce full-stack completa (inspirada en Mercadona), que evoluciona desde un servidor básico hasta una arquitectura moderna y contenerizada.
 
 ---
 
-## 🛠️ Herramientas y Tecnologías
+## 🚀 Funcionalidades Principales
 
-El proyecto utiliza un stack moderno y escalable:
+El sistema ofrece una experiencia completa tanto para clientes como para administradores:
+
+### 👤 Interfaz del Cliente
+* **Catálogo y Búsqueda:** Visualización de productos con búsqueda avanzada por texto, categorías y subcategorías.
+* **Carrito de Compra:** Gestión de estado mediante `express-session` (añadir, resumir y eliminar ítems).
+* **Sistema de Usuarios:** Registro y Login seguros con gestión de sesiones mediante **JWT** almacenado en cookies `httpOnly`.
+
+### 🛡️ Panel de Administración
+* **Gestión de Roles:** Diferenciación entre usuarios estándar y administradores (`admin: true`).
+* **Edición en Caliente:** Modificación de precios directamente desde la interfaz.
+* **Gestión de Inventario:** CRUD completo (Crear, Leer, Actualizar, Eliminar) de productos en la base de datos.
+
+### ⚙️ Módulos Especiales
+* **Data Scraper:** Scripts (`parser.js`) para extraer datos de HTMLs locales y generar un JSON maestro.
+* **Seeding:** Script de carga masiva (`seed.js`) para poblar MongoDB automáticamente.
+
+---
+
+## 🛠️ Tecnologías y Stack
 
 ### Backend (Server-Side)
-* **Runtime:** Node.js (ES Modules).
-* **Framework:** Express 5.
+* **Runtime:** Node.js (ES Modules) con **Express 5**.
 * **Base de Datos:** MongoDB + Mongoose (ODM).
-* **Renderizado (SSR):** Nunjucks para vistas públicas.
-* **Seguridad:**
-    * `jsonwebtoken` (JWT) para autenticación vía cookies `httpOnly`.
-    * `bcrypt` para hashing de contraseñas.
-* **Logging:** Winston (logs en consola y archivo).
-* **Parsing:** `node-html-parser` para extracción de datos de HTMLs locales.
+* **Vistas:** Renderizado SSR con **Nunjucks**.
+* **Seguridad:** `bcrypt` (hashing) y `jsonwebtoken` (auth).
+* **Logging:** Winston (consola y archivos).
 
 ### Frontend (Client-Side)
 * **Framework:** React (en carpeta `practica6-frontend`).
-* **Build Tool:** Vite.
-* **Estilos:** Tailwind CSS.
-* **Proxy:** Configurado en Vite para redirigir peticiones API al backend.
+* **Estilos:** Tailwind CSS / Bootstrap.
+* **Build Tool:** Vite (configurado con proxy para la API).
 
 ### Infraestructura
-* **Contenedores:** Docker y Docker Compose.
+* **Contenedores:** Docker & Docker Compose.
+* **Proxy Inverso:** Caddy (para gestión de tráfico y archivos estáticos).
 
 ---
 
-## ✨ Funcionalidades Principales
+## 📈 Evolución del Proyecto (P1 - P7)
 
-El sistema está dividido en varios módulos lógicos:
-
-1.  **API RESTful (`/api/products`):**
-    * CRUD completo de productos.
-    * Búsqueda avanzada por texto, categoría y subcategoría.
-2.  **Sistema de Usuarios (`Auth`):**
-    * Registro y Login seguros.
-    * Gestión de sesiones mediante **JWT** almacenado en cookies seguras.
-3.  **Carrito de Compra:**
-    * Gestión de estado del carrito mediante `express-session`.
-4.  **Data Scraper & Seeding:**
-    * Scripts (`parser.js`) que leen HTMLs locales (simulando la web real) para generar un JSON maestro.
-    * Script de carga masiva (`seed.js`) para poblar la base de datos.
-5.  **Vistas Híbridas:**
-    * Interfaz renderizada en servidor con Nunjucks (Portada, Login, Carrito).
-    * Cliente React independiente para consumo de API.
+El desarrollo se realizó de forma incremental a través de 7 fases:
+* **P1 & P2:** Servidor básico y sistema de rutas con Express.
+* **P3:** Integración de Nunjucks y diseño responsive.
+* **P4:** Modelado de datos con Mongoose y persistencia en MongoDB.
+* **P5:** Implementación del carrito de compra con sesiones.
+* **P6:** Seguridad, roles de usuario y desarrollo de API REST para el cliente React.
+* **P7:** Contenerización con Docker y orquestación de servicios.
 
 ---
 
-## 🐳 Despliegue Rápido con Contenedores (Docker)
+## 🐳 Instalación y Ejecución Rápida (Docker)
 
-Si dispones de Docker y Docker Compose, puedes levantar toda la arquitectura (Base de datos + Backend + Frontend) con un solo comando.
+La forma más sencilla de levantar el proyecto (BD + Backend + Frontend) es usando Docker:
 
-1.  **Crear archivo `.env`:**
-    Asegúrate de tener el archivo `.env` en la raíz (básate en el ejemplo de abajo).
+1.  **Configurar variables de entorno:**
+    Crea un archivo `.env` en la raíz basado en lo siguiente:
+    ```env
+    PORT=8000
+    MONGO_URI=mongodb://root:example@mongodb:27017/DAI?authSource=admin
+    SECRET_KEY=tu_clave_secreta_super_segura
+    ```
 
-2.  **Levantar servicios:**
+2.  **Levantar el entorno:**
     ```bash
     docker-compose up --build
     ```
 
 3.  **Acceso:**
-    * **Backend/Tienda:** `http://localhost:8000`
+    * **Tienda (SSR/Backend):** `http://localhost:8000`
     * **Frontend React:** `http://localhost:5173`
-    * **MongoDB:** Puerto `27017` (interno).
 
 ---
 
-## ⚙️ Instalación y Ejecución Manual (Sin Docker)
+## ⚙️ Ejecución Manual (Desarrollo)
 
-Si prefieres ejecutar el entorno localmente paso a paso:
+Si prefieres ejecutarlo sin Docker, asegúrate de tener Node.js (v16+) y MongoDB corriendo localmente:
 
-### 1. Requisitos Previos
-* Node.js (v16+).
-* MongoDB corriendo localmente o URI remota.
+1.  **Instalar dependencias:**
+    ```bash
+    npm install
+    ```
 
-### 2. Configuración de Entorno (.env)
-Crea un archivo `.env` en la raíz del proyecto:
-```env
-PORT=8000
-MONGO_URI=mongodb://root:example@localhost:27017/DAI?authSource=admin
-SECRET_KEY=tu_clave_secreta_super_segura
+2.  **Poblar la base de datos:**
+    ```bash
+    node seed.js
+    ```
+
+3.  **Iniciar el servidor:**
+    ```bash
+    npm run dev
+    ```
